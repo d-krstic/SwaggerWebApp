@@ -14,11 +14,9 @@ namespace SwaggerWebApp
         /*
         ta class bi moral skrbeti za povezavo z SQL baza ampak sem imel probleme pri povezavi zato sem zacasno naredil da bere iz data.json za "simuliranje" delovanja baze
         */
-        //public static SqlConnection myConn = new SqlConnection("server=127.0.0.1;database=MyDB;");
         public static List<Email> data = new List<Email>();
 
         public static void open() {
-            //myConn.Open();
             using (StreamReader r = new StreamReader("data.json"))
             {
                 string json = r.ReadToEnd();
