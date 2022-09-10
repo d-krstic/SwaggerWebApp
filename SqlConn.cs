@@ -26,10 +26,7 @@ namespace SwaggerWebApp
             }
 
             //napolni cache z emaili ki so bili prebrani z baze
-            CacheItemPolicy policy = new CacheItemPolicy();
-            foreach (Email e in data) {
-                cache.Set(e.Mail, e, policy);
-            }
+            fillCache();
         }
 
         public static void save() {
@@ -45,10 +42,25 @@ namespace SwaggerWebApp
             cache.Remove(e.Mail);
 
             //ce je cache prazen (je uporabnik query-al vse emaile v njem) bo cache napolnilo z email s baze
-            if (cache.GetCount() == 0) {
-                CacheItemPolicy policy = new CacheItemPolicy();
-                foreach (Email em in data) {
-                    cache.Set(em.Mail, em, policy);
+            fillCache();
+        }
+
+        private static void fillCache() { //vzame 50% random emailov iz data in jih kopira v cache (v dejasnkem primeru bi bil % velikosti drugacen)
+            Random rand = new Random();
+            int n = (int)Math.Floor((double)data.Count * 0.5);
+            List<int> usedIndexes = new List<int>();
+            CacheItemPolicy policy = new CacheItemPolicy();
+
+            for (int i = 0; i < n; i++) {
+                int x = rand.Next(data.Count);
+                if (usedIndexes.Contains(x)) {
+                    i--;
+                    continue;
+                }
+                else {
+                    usedIndexes.Add(x);
+                    Email toCache = data[x];
+                    cache.Set(toCache.Mail, toCache, policy);
                 }
             }
         }

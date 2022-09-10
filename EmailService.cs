@@ -21,8 +21,12 @@ namespace SwaggerWebApp
             }*/
         }
 
-        public List<Email> Delete(int eId) {
+        public List<Email> Delete(int eId) { //izbrise iz data in cache
+            Email removeFromCache = SqlConn.data.Find(x => x.Id == eId);
+            SqlConn.cache.Remove(removeFromCache.Mail);
+
             SqlConn.data.RemoveAll(x => x.Id == eId);
+
             return SqlConn.data;
         }
 
