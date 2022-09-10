@@ -26,10 +26,10 @@ namespace SwaggerWebApp
         }
 
         // GET: api/Email/[mail]
-        [HttpGet("{mail}", Name = "Get")]
-        public Email Get(string m)
+        [HttpGet("{mail}")]
+        public Email Get(string mail)
         {
-            return _emailService.Get(m);
+            return _emailService.Get(mail);
         }
 
         // POST: api/Email

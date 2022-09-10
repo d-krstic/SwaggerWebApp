@@ -26,8 +26,15 @@ namespace SwaggerWebApp
             return SqlConn.data;
         }
 
-        public Email Get(string m) {
-            return SqlConn.data.SingleOrDefault(x => x.Mail == m);
+        public Email Get(string m) { //pogleda ce je email v cache, ce je, ga pred returnom iz cache izbrise saj predvidevam da uporabnik nebo ponovno iskal emaila za katerega je ze dobil rezultat
+            Email ret = SqlConn.checkCache(m);
+            if (ret == null) {
+                ret = SqlConn.data.SingleOrDefault(x => x.Mail == m);
+            }
+            else {
+                SqlConn.removeFromCache(ret);
+            }
+            return ret;
         }
 
         public List<Email> Gets() {
